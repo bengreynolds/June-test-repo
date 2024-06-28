@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Mar  2 10:45:09 2022
+
+@author: idea04
+"""
+import multiCam_DLC_utils_v2 as clara
+import serial
+import time
+
+for i in range(10):
+    try:
+        print('/dev/ttyACM'+str(i))
+        # ser = serial.Serial('/dev/ttyACM'+str(i), baudrate=115200, write_timeout = 0.001)
+        ser = serial.Serial('/dev/ttyACM'+str(i))
+        break
+    except:
+        pass
+time.sleep(2)
+user_cfg = clara.read_config()
+msg = 'F'+str(user_cfg['toneFreqA'])+'x'
+ser.write(msg.encode())
+time.sleep(1)
+user_cfg = clara.read_config()
+msg = 'G'+str(user_cfg['toneFreqB'])+'x'
+ser.write(msg.encode())
+time.sleep(1)
+user_cfg = clara.read_config()
+msg = 'H'+str(user_cfg['toneFreqC'])+'x'
+ser.write(msg.encode())
+time.sleep(1)
+user_cfg = clara.read_config()
+msg = 'D'+str(user_cfg['toneDur'])+'x'
+ser.write(msg.encode())
+time.sleep(1)
+
+msg = 'T1x'
+ser.write(msg.encode())
+time.sleep(1)
+msg = 'T2x'
+ser.write(msg.encode())
+time.sleep(1)
+msg = 'T3x'
+ser.write(msg.encode())
+time.sleep(1)
+ser.write(b'Q')
+time.sleep(5)
+
+ser.close()
